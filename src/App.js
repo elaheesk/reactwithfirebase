@@ -21,14 +21,14 @@ import {
 } from "firebase/firestore";
 function App() {
   const [users, setUsers] = React.useState([]);
-  const usersCollectionRef = collection(db, "users");
-
+  const [showTextfields, setShowTextfields] = React.useState(false);
   const [allInputVals, setAllInputVals] = React.useState({
     id: "",
     name: "",
     age: 0,
     quote: "",
   });
+  const usersCollectionRef = collection(db, "users");
 
   const handleChange = (evt) => {
     setAllInputVals({
@@ -40,6 +40,15 @@ function App() {
     });
   };
 
+  const handleClick = (theUser) => {
+    users.map((user) => {
+      if (user.id === theUser.id) {
+        setShowTextfields(!showTextfields);
+      }
+
+      return user;
+    });
+  };
   const createUser = async (allInputVals) => {
     await addDoc(usersCollectionRef, {
       name: allInputVals.name,
@@ -72,14 +81,18 @@ function App() {
     getUsers();
   }, []);
   return (
-    <Grid>
-      <TextField name="name" placeholder="name" onChange={handleChange} />
-      <TextField name="age" placeholder=" age" onChange={handleChange} />
+    <Grid container>
+      <Grid container justifyContent="space-evenly" item>
+        <Grid item>
+          <TextField name="name" placeholder="name" onChange={handleChange} />
+          <TextField name="age" placeholder=" age" onChange={handleChange} />
+          <TextField name="quote" placeholder="quote" onChange={handleChange} />
+          <Button onClick={() => createUser(allInputVals)}>Create user</Button>
+        </Grid>
+        <Grid item> </Grid>
+      </Grid>
 
-      <TextField name="quote" placeholder="quote" onChange={handleChange} />
-
-      <Button onClick={() => createUser(allInputVals)}>Create user</Button>
-      <div>
+      <Grid>
         {users.map((user) => {
           return (
             <List
@@ -90,48 +103,62 @@ function App() {
                 bgcolor: "background.paper",
               }}
             >
-              <ListItem alignItems="flex-start">
-                <ListItemText
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {user.name}, {user.age} years
-                      </Typography>
-                      <Typography> Quote: {user.quote}</Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
+              <Grid container item justifyContent="space-between">
+                <Grid item>
+                  {" "}
+                  <ListItem alignItems="flex-start">
+                    <ListItemText
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {user.name}, {user.age} years
+                          </Typography>
+                          <Typography> Quote: {user.quote}</Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+                <Grid item>
+                  <Button onClick={() => handleClick(user)}>
+                    {showTextfields ? "Go back" : "Edit"}
+                  </Button>
+                </Grid>
+              </Grid>
 
-              <TextField
-                name="name"
-                placeholder="name"
-                onChange={handleChange}
-              />
-              <TextField
-                name="age"
-                placeholder=" age"
-                onChange={handleChange}
-              />
+              {showTextfields && (
+                <Grid>
+                  <TextField
+                    name="name"
+                    placeholder="name"
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    name="age"
+                    placeholder=" age"
+                    onChange={handleChange}
+                  />
 
-              <TextField
-                name="quote"
-                placeholder="quote"
-                onChange={handleChange}
-              />
+                  <TextField
+                    name="quote"
+                    placeholder="quote"
+                    onChange={handleChange}
+                  />
 
-              <Button
-                onClick={() => {
-                  updateUser(allInputVals, user.id);
-                }}
-              >
-                update user
-              </Button>
+                  <Button
+                    onClick={() => {
+                      updateUser(allInputVals, user.id);
+                    }}
+                  >
+                    update user
+                  </Button>
+                </Grid>
+              )}
               <Button
                 onClick={() => {
                   deleteUser(user.id);
@@ -143,7 +170,7 @@ function App() {
             </List>
           );
         })}
-      </div>
+      </Grid>
     </Grid>
   );
 }
