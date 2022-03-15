@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 import {
   Button,
   Grid,
@@ -21,7 +22,7 @@ import {
 } from "firebase/firestore";
 function App() {
   const [users, setUsers] = React.useState([]);
-  const [showTextfields, setShowTextfields] = React.useState(false);
+  const [selectedPerson, toggleInputs] = React.useState(-1);
   const [allInputVals, setAllInputVals] = React.useState({
     id: "",
     name: "",
@@ -40,14 +41,8 @@ function App() {
     });
   };
 
-  const handleClick = (theUser) => {
-    users.map((user) => {
-      if (user.id === theUser.id) {
-        setShowTextfields(!showTextfields);
-      }
-
-      return user;
-    });
+  const openSelected = (index) => {
+    toggleInputs(selectedPerson === index ? -1 : index);
   };
   const createUser = async (allInputVals) => {
     await addDoc(usersCollectionRef, {
@@ -65,6 +60,7 @@ function App() {
       quote: allInputVals.quote,
     };
     await updateDoc(userDoc, newFields);
+    openSelected();
   };
 
   const deleteUser = async (id) => {
@@ -80,6 +76,8 @@ function App() {
     };
     getUsers();
   }, []);
+
+  console.log(users, "users");
   return (
     <Grid container>
       <Grid container justifyContent="space-evenly" item>
@@ -93,10 +91,12 @@ function App() {
       </Grid>
 
       <Grid>
-        {users.map((user) => {
+        {users.map(({ name, id, age, quote }, index) => {
           return (
             <List
-              key={user.id}
+              key={`item-${index}`}
+              //key={user.id}
+              className={`item ${selectedPerson === index ? "open" : ""}`}
               sx={{
                 width: "100%",
                 maxWidth: 360,
@@ -116,52 +116,54 @@ function App() {
                             variant="body2"
                             color="text.primary"
                           >
-                            {user.name}, {user.age} years
+                            {name}, {age} years
                           </Typography>
-                          <Typography> Quote: {user.quote}</Typography>
+                          <Typography> Quote: {quote}</Typography>
                         </React.Fragment>
                       }
                     />
                   </ListItem>
                 </Grid>
                 <Grid item>
-                  <Button onClick={() => handleClick(user)}>
-                    {showTextfields ? "Go back" : "Edit"}
+                  <Button
+                    className="question"
+                    onClick={() => openSelected(index)}
+                  >
+                    Edit
                   </Button>
                 </Grid>
               </Grid>
 
-              {showTextfields && (
-                <Grid>
-                  <TextField
-                    name="name"
-                    placeholder="name"
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name="age"
-                    placeholder=" age"
-                    onChange={handleChange}
-                  />
+              <Grid className="answer">
+                <TextField
+                  name="name"
+                  placeholder="name"
+                  onChange={handleChange}
+                />
+                <TextField
+                  name="age"
+                  placeholder=" age"
+                  onChange={handleChange}
+                />
 
-                  <TextField
-                    name="quote"
-                    placeholder="quote"
-                    onChange={handleChange}
-                  />
+                <TextField
+                  name="quote"
+                  placeholder="quote"
+                  onChange={handleChange}
+                />
 
-                  <Button
-                    onClick={() => {
-                      updateUser(allInputVals, user.id);
-                    }}
-                  >
-                    update user
-                  </Button>
-                </Grid>
-              )}
+                <Button
+                  onClick={() => {
+                    updateUser(allInputVals, id);
+                  }}
+                >
+                  update user
+                </Button>
+              </Grid>
+
               <Button
                 onClick={() => {
-                  deleteUser(user.id);
+                  deleteUser(id);
                 }}
               >
                 Delete user
