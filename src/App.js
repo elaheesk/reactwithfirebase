@@ -85,7 +85,7 @@ function App() {
   console.log(users, "users");
   return (
     <Grid
-      sx={{ rowGap: "30px", marginTop: "30px", backgroundColor: "#fffde7" }}
+      sx={{ rowGap: "30px", marginTop: "30px", backgroundColor: "floralwhite" }}
       container
     >
       <Grid container item justifyContent="center">
@@ -132,7 +132,7 @@ function App() {
                 sx={{
                   width: "900px",
 
-                  bgcolor: "#fffde7",
+                  bgcolor: "floralwhite",
                 }}
               >
                 <Grid container item justifyContent="space-between">
