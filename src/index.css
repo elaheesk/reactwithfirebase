@@ -1,11 +1,11 @@
-.question {
+.editButton {
   font-weight: bold;
   cursor: pointer;
 }
 
-.answer {
+.editTextFields {
   display: none;
 }
-.open .answer {
+.open .editTextFields {
   display: block;
 }

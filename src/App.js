@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   Divider,
-  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
@@ -32,12 +31,10 @@ function App() {
   const usersCollectionRef = collection(db, "users");
 
   const handleChange = (evt) => {
+    const value = evt.target.value;
     setAllInputVals({
       ...allInputVals,
-      [evt.target.name]: evt.target.value,
-
-      [evt.target.age]: evt.target.value,
-      [evt.target.quote]: evt.target.value,
+      [evt.target.name]: value,
     });
   };
 
@@ -50,6 +47,8 @@ function App() {
       age: allInputVals.age,
       quote: allInputVals.quote,
     });
+    const data = await getDocs(usersCollectionRef);
+    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   const updateUser = async (allInputVals, id) => {
@@ -60,12 +59,16 @@ function App() {
       quote: allInputVals.quote,
     };
     await updateDoc(userDoc, newFields);
+    const data = await getDocs(usersCollectionRef);
+    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     openSelected();
   };
 
   const deleteUser = async (id) => {
     const userDoc = doc(db, "users", id);
     await deleteDoc(userDoc);
+    const data = await getDocs(usersCollectionRef);
+    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   React.useEffect(() => {
@@ -95,7 +98,6 @@ function App() {
           return (
             <List
               key={`item-${index}`}
-              //key={user.id}
               className={`item ${selectedPerson === index ? "open" : ""}`}
               sx={{
                 width: "100%",
@@ -107,26 +109,22 @@ function App() {
                 <Grid item>
                   {" "}
                   <ListItem alignItems="flex-start">
-                    <ListItemText
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {name}, {age} years
-                          </Typography>
-                          <Typography> Quote: {quote}</Typography>
-                        </React.Fragment>
-                      }
-                    />
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {name}, {age} years
+                    </Typography>
+                    <React.Fragment>
+                      <Typography> Quote: {quote}</Typography>
+                    </React.Fragment>
                   </ListItem>
                 </Grid>
                 <Grid item>
                   <Button
-                    className="question"
+                    className="editButton"
                     onClick={() => openSelected(index)}
                   >
                     Edit
@@ -134,7 +132,7 @@ function App() {
                 </Grid>
               </Grid>
 
-              <Grid className="answer">
+              <Grid className="editTextFields">
                 <TextField
                   name="name"
                   placeholder="name"
