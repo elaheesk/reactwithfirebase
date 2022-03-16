@@ -33,10 +33,11 @@ function App() {
   const usersCollectionRef = collection(db, "users");
 
   const handleChange = (evt) => {
-    const value = evt.target.value;
     setAllInputVals({
       ...allInputVals,
-      [evt.target.name]: value,
+      [evt.target.name]: evt.target.value,
+      [evt.target.age]: evt.target.value,
+      [evt.target.quote]: evt.target.value,
     });
   };
 
@@ -51,18 +52,26 @@ function App() {
     });
     const data = await getDocs(usersCollectionRef);
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setAllInputVals({ name: "", age: "", quote: "" });
+    // console.log("nyskapade users", users);
   };
 
   const updateUser = async (allInputVals, id) => {
     const userDoc = doc(db, "users", id);
+
     const newFields = {
+      id: id,
       age: allInputVals.age,
       name: allInputVals.name,
       quote: allInputVals.quote,
     };
+
     await updateDoc(userDoc, newFields);
+
     const data = await getDocs(usersCollectionRef);
+
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setAllInputVals({ name: "", age: "", quote: "" });
     openSelected();
   };
 
@@ -77,7 +86,7 @@ function App() {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      console.log(data.docs);
+      // console.log(data.docs);
     };
     getUsers();
   }, []);
@@ -100,6 +109,7 @@ function App() {
           <TextField
             sx={{ marginRight: "10px" }}
             size="small"
+            value={allInputVals.name}
             name="name"
             label="Type name"
             onChange={handleChange}
@@ -107,12 +117,14 @@ function App() {
           <TextField
             size="small"
             type="number"
+            value={allInputVals.age}
             name="age"
             label="Type age"
             onChange={handleChange}
           />
           <TextField
             name="quote"
+            value={allInputVals.quote}
             label="Type quote"
             fullWidth
             onChange={handleChange}
@@ -125,9 +137,8 @@ function App() {
       <Grid container justifyContent="space-evenly" item>
         {users.map(({ name, id, age, quote }, index) => {
           return (
-            <Grid item>
+            <Grid item key={`item-${index}`}>
               <List
-                key={`item-${index}`}
                 className={`item ${selectedPerson === index ? "open" : ""}`}
                 sx={{
                   width: "900px",
@@ -164,6 +175,7 @@ function App() {
 
                 <Grid sx={{ marginTop: "20px" }} className="editTextFields">
                   <TextField
+                    value={allInputVals.name}
                     name="name"
                     label="Type name"
                     onChange={handleChange}
@@ -171,6 +183,7 @@ function App() {
                     sx={{ marginRight: "10px", width: 150 }}
                   />
                   <TextField
+                    value={allInputVals.age}
                     name="age"
                     label="Type age"
                     type="number"
@@ -185,6 +198,7 @@ function App() {
                     label="Type quote"
                     multiline
                     rows={3}
+                    value={allInputVals.quote}
                     name="quote"
                     onChange={handleChange}
                   />
