@@ -4,11 +4,11 @@ import {
   Button,
   Grid,
   List,
-  ListItem,
   Divider,
   TextField,
   Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { db } from "./firebase-config";
 import {
@@ -82,92 +82,134 @@ function App() {
 
   console.log(users, "users");
   return (
-    <Grid container>
-      <Grid container justifyContent="space-evenly" item>
-        <Grid item>
-          <TextField name="name" placeholder="name" onChange={handleChange} />
-          <TextField name="age" placeholder=" age" onChange={handleChange} />
-          <TextField name="quote" placeholder="quote" onChange={handleChange} />
-          <Button onClick={() => createUser(allInputVals)}>Create user</Button>
-        </Grid>
-        <Grid item> </Grid>
+    <Grid
+      sx={{ rowGap: "30px", marginTop: "30px", backgroundColor: "#fffde7" }}
+      container
+    >
+      <Grid container item justifyContent="center">
+        {" "}
+        <Typography variant="h4" gutterBottom component="div">
+          Create quote list
+        </Typography>
       </Grid>
 
-      <Grid>
+      <Grid container justifyContent="space-evenly">
+        <Grid item>
+          <TextField
+            sx={{ marginRight: "10px" }}
+            size="small"
+            name="name"
+            label="Type name"
+            onChange={handleChange}
+          />
+          <TextField
+            size="small"
+            type="number"
+            name="age"
+            label="Type age"
+            onChange={handleChange}
+          />
+          <TextField
+            name="quote"
+            label="Type quote"
+            fullWidth
+            onChange={handleChange}
+            sx={{ marginTop: "10px" }}
+          />
+          <Button onClick={() => createUser(allInputVals)}>Create user</Button>
+        </Grid>
+      </Grid>
+
+      <Grid container justifyContent="space-evenly" item>
         {users.map(({ name, id, age, quote }, index) => {
           return (
-            <List
-              key={`item-${index}`}
-              className={`item ${selectedPerson === index ? "open" : ""}`}
-              sx={{
-                width: "100%",
-                maxWidth: 360,
-                bgcolor: "background.paper",
-              }}
-            >
-              <Grid container item justifyContent="space-between">
-                <Grid item>
-                  {" "}
-                  <ListItem alignItems="flex-start">
+            <Grid item>
+              <List
+                key={`item-${index}`}
+                className={`item ${selectedPerson === index ? "open" : ""}`}
+                sx={{
+                  width: "900px",
+
+                  bgcolor: "#fffde7",
+                }}
+              >
+                <Grid container item justifyContent="space-between">
+                  <Grid item>
+                    {" "}
                     <Typography
+                      gutterBottom
                       sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
+                      component="div"
                       color="text.primary"
                     >
                       {name}, {age} years
                     </Typography>
-                    <React.Fragment>
-                      <Typography> Quote: {quote}</Typography>
-                    </React.Fragment>
-                  </ListItem>
+                    <Typography variant="body2" gutterBottom component="div">
+                      {" "}
+                      Quote: {quote}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      className="editButton"
+                      onClick={() => openSelected(index)}
+                    >
+                      Edit
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
+
+                <Grid sx={{ marginTop: "20px" }} className="editTextFields">
+                  <TextField
+                    name="name"
+                    label="Type name"
+                    onChange={handleChange}
+                    size="small"
+                    sx={{ marginRight: "10px", width: 150 }}
+                  />
+                  <TextField
+                    name="age"
+                    label="Type age"
+                    type="number"
+                    placeholder=" age"
+                    onChange={handleChange}
+                    size="small"
+                    sx={{ marginRight: "10px", width: 150 }}
+                  />
+
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="Type quote"
+                    multiline
+                    rows={3}
+                    name="quote"
+                    onChange={handleChange}
+                  />
+
                   <Button
-                    className="editButton"
-                    onClick={() => openSelected(index)}
+                    onClick={() => {
+                      updateUser(allInputVals, id);
+                    }}
                   >
-                    Edit
+                    update user
                   </Button>
                 </Grid>
-              </Grid>
-
-              <Grid className="editTextFields">
-                <TextField
-                  name="name"
-                  placeholder="name"
-                  onChange={handleChange}
-                />
-                <TextField
-                  name="age"
-                  placeholder=" age"
-                  onChange={handleChange}
-                />
-
-                <TextField
-                  name="quote"
-                  placeholder="quote"
-                  onChange={handleChange}
-                />
 
                 <Button
+                  size="small"
+                  sx={{ marginTop: "10px" }}
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
                   onClick={() => {
-                    updateUser(allInputVals, id);
+                    deleteUser(id);
                   }}
                 >
-                  update user
+                  Delete
                 </Button>
-              </Grid>
 
-              <Button
-                onClick={() => {
-                  deleteUser(id);
-                }}
-              >
-                Delete user
-              </Button>
-              <Divider variant="inset" component="li" />
-            </List>
+                <Divider sx={{ marginTop: "5px" }} component="li" />
+              </List>
+            </Grid>
           );
         })}
       </Grid>
