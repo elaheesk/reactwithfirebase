@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
 
 import { db } from "./firebase-config";
 import {
@@ -153,6 +155,7 @@ function App() {
                     <Button
                       className="editButton"
                       onClick={() => openSelected(index)}
+                      startIcon={<EditIcon />}
                     >
                       Edit
                     </Button>
@@ -187,11 +190,12 @@ function App() {
                   />
 
                   <Button
+                    startIcon={<DoneIcon />}
                     onClick={() => {
                       updateUser(allInputVals, id);
                     }}
                   >
-                    update user
+                    update
                   </Button>
                 </Grid>
 
