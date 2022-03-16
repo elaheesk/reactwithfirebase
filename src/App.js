@@ -49,7 +49,7 @@ function App() {
     });
   };
 
-  const handleChangeNew = (evt) => {
+  const handleChangeNewInputs = (evt) => {
     setInputValsToUpdate({
       ...inputValsToUpdate,
       [evt.target.name]: evt.target.value,
@@ -203,7 +203,7 @@ function App() {
                     value={inputValsToUpdate.name}
                     name="name"
                     label="Type name"
-                    onChange={handleChangeNew}
+                    onChange={handleChangeNewInputs}
                     size="small"
                     sx={{ marginRight: "10px", width: 150 }}
                   />
@@ -213,7 +213,7 @@ function App() {
                     label="Type age"
                     type="number"
                     placeholder=" age"
-                    onChange={handleChangeNew}
+                    onChange={handleChangeNewInputs}
                     size="small"
                     sx={{ marginRight: "10px", width: 150 }}
                   />
@@ -225,7 +225,7 @@ function App() {
                     rows={3}
                     value={inputValsToUpdate.quote}
                     name="quote"
-                    onChange={handleChangeNew}
+                    onChange={handleChangeNewInputs}
                   />
 
                   <Button
