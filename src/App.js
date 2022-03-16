@@ -30,6 +30,14 @@ function App() {
     age: 0,
     quote: "",
   });
+
+  const [inputValsToUpdate, setInputValsToUpdate] = React.useState({
+    id: "",
+    name: "",
+    age: 0,
+    quote: "",
+  });
+
   const usersCollectionRef = collection(db, "users");
 
   const handleChange = (evt) => {
@@ -41,8 +49,28 @@ function App() {
     });
   };
 
-  const openSelected = (index) => {
+  const handleChangeNew = (evt) => {
+    setInputValsToUpdate({
+      ...inputValsToUpdate,
+      [evt.target.name]: evt.target.value,
+      [evt.target.age]: evt.target.value,
+      [evt.target.quote]: evt.target.value,
+    });
+  };
+
+  const openSelected = (user, index) => {
     toggleInputs(selectedPerson === index ? -1 : index);
+
+    const copyUsersArray = [...users];
+    copyUsersArray[index] = {
+      id: user.id,
+      name: user.name,
+      age: user.age,
+      quote: user.quote,
+    };
+    setUsers(copyUsersArray);
+
+    setInputValsToUpdate({ name: user.name, age: user.age, quote: user.quote });
   };
   const createUser = async (allInputVals) => {
     await addDoc(usersCollectionRef, {
@@ -56,22 +84,19 @@ function App() {
     // console.log("nyskapade users", users);
   };
 
-  const updateUser = async (allInputVals, id) => {
+  const updateUser = async (id) => {
     const userDoc = doc(db, "users", id);
-
     const newFields = {
       id: id,
-      age: allInputVals.age,
-      name: allInputVals.name,
-      quote: allInputVals.quote,
+      age: inputValsToUpdate.age,
+      name: inputValsToUpdate.name,
+      quote: inputValsToUpdate.quote,
     };
-
     await updateDoc(userDoc, newFields);
-
     const data = await getDocs(usersCollectionRef);
-
+    console.log("vilket id", newFields.id);
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    setAllInputVals({ name: "", age: "", quote: "" });
+    setInputValsToUpdate({ name: "", age: "", quote: "" });
     openSelected();
   };
 
@@ -135,7 +160,7 @@ function App() {
       </Grid>
 
       <Grid container justifyContent="space-evenly" item>
-        {users.map(({ name, id, age, quote }, index) => {
+        {users.map((user, index) => {
           return (
             <Grid item key={`item-${index}`}>
               <List
@@ -155,17 +180,17 @@ function App() {
                       component="div"
                       color="text.primary"
                     >
-                      {name}, {age} years
+                      {user.name}, {user.age} years
                     </Typography>
                     <Typography variant="body2" gutterBottom component="div">
                       {" "}
-                      Quote: {quote}
+                      Quote: {user.quote}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Button
                       className="editButton"
-                      onClick={() => openSelected(index)}
+                      onClick={() => openSelected(user, index)}
                       startIcon={<EditIcon />}
                     >
                       Edit
@@ -175,20 +200,20 @@ function App() {
 
                 <Grid sx={{ marginTop: "20px" }} className="editTextFields">
                   <TextField
-                    value={allInputVals.name}
+                    value={inputValsToUpdate.name}
                     name="name"
                     label="Type name"
-                    onChange={handleChange}
+                    onChange={handleChangeNew}
                     size="small"
                     sx={{ marginRight: "10px", width: 150 }}
                   />
                   <TextField
-                    value={allInputVals.age}
+                    value={inputValsToUpdate.age}
                     name="age"
                     label="Type age"
                     type="number"
                     placeholder=" age"
-                    onChange={handleChange}
+                    onChange={handleChangeNew}
                     size="small"
                     sx={{ marginRight: "10px", width: 150 }}
                   />
@@ -198,15 +223,15 @@ function App() {
                     label="Type quote"
                     multiline
                     rows={3}
-                    value={allInputVals.quote}
+                    value={inputValsToUpdate.quote}
                     name="quote"
-                    onChange={handleChange}
+                    onChange={handleChangeNew}
                   />
 
                   <Button
                     startIcon={<DoneIcon />}
                     onClick={() => {
-                      updateUser(allInputVals, id);
+                      updateUser(user.id);
                     }}
                   >
                     update
@@ -219,7 +244,7 @@ function App() {
                   variant="outlined"
                   startIcon={<DeleteIcon />}
                   onClick={() => {
-                    deleteUser(id);
+                    deleteUser(user.id);
                   }}
                 >
                   Delete
