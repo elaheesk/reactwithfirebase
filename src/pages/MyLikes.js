@@ -15,7 +15,11 @@ const MyLikes = ({ likeUser, changeLikeProp }) => {
           </Grid>
         ))
       ) : (
-        <Grid> No likes yet</Grid>
+        <Grid>
+          <Typography variant="h5" gutterBottom component="div">
+            No likes yet
+          </Typography>{" "}
+        </Grid>
       )}
     </Grid>
   );

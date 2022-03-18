@@ -5,14 +5,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const NavigationBar = ({ likeUser, setLikeUser }) => {
   return (
-    <Grid item container>
-      <Typography
-        fontWeight={"light"}
-        variant="h6"
-        sx={{
-          marginRight: 3,
-        }}
-      >
+    <Grid item container position="fixed" sx={{ marginLeft: "30px" }}>
+      <Typography fontWeight={"light"} variant="h6">
         <Link component={RouterLink} to="/">
           Home
         </Link>

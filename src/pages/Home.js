@@ -32,7 +32,7 @@ const Home = ({
       <Typography variant="h5" gutterBottom component="div">
         Create user and quote
       </Typography>
-      <Grid container>
+      <Grid item container>
         <Grid item>
           <TextField
             sx={{
@@ -58,10 +58,10 @@ const Home = ({
             label="Type quote"
             fullWidth
             onChange={handleChange}
-            sx={{ marginTop: "10px" }}
+            sx={{ marginTop: "5px" }}
           />
           <MyButton
-            sx={{ marginTop: "8px" }}
+            sx={{ marginTop: "5px" }}
             size="small"
             onClick={() => createUser(allInputVals)}
           >
@@ -69,29 +69,31 @@ const Home = ({
           </MyButton>
         </Grid>
       </Grid>
-      {users.map((user, index) => {
-        return (
-          <ListLayout
-            key={user.id}
-            users={users}
-            setUsers={setUsers}
-            likeUser={likeUser}
-            setLikeUser={setLikeUser}
-            user={user}
-            index={index}
-            selectedPerson={selectedPerson}
-            openSelected={openSelected}
-            inputValsToUpdate={inputValsToUpdate}
-            setInputValsToUpdate={setInputValsToUpdate}
-            updateUser={updateUser}
-            deleteUser={deleteUser}
-            changeLikeProp={changeLikeProp}
-            allInputVals={allInputVals}
-            handleChange={handleChange}
-            createUser={createUser}
-          />
-        );
-      })}
+      <Grid item sx={{ marginTop: "30px" }}>
+        {users.map((user, index) => {
+          return (
+            <ListLayout
+              key={user.id}
+              users={users}
+              setUsers={setUsers}
+              likeUser={likeUser}
+              setLikeUser={setLikeUser}
+              user={user}
+              index={index}
+              selectedPerson={selectedPerson}
+              openSelected={openSelected}
+              inputValsToUpdate={inputValsToUpdate}
+              setInputValsToUpdate={setInputValsToUpdate}
+              updateUser={updateUser}
+              deleteUser={deleteUser}
+              changeLikeProp={changeLikeProp}
+              allInputVals={allInputVals}
+              handleChange={handleChange}
+              createUser={createUser}
+            />
+          );
+        })}
+      </Grid>
     </Grid>
   );
 };
