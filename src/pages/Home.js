@@ -1,6 +1,7 @@
 import React from "react";
 import ListLayout from "../components/ListLayout";
 import { Button, Grid, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/styles";
 const Home = ({
   users,
   setUsers,
@@ -17,12 +18,26 @@ const Home = ({
   deleteUser,
   changeLikeProp,
 }) => {
+  const MyButton = styled(Button)({
+    border: 0,
+    borderRadius: 3,
+    background: "linear-gradient(45deg, ##a7b8a8 30%, #a7b8a8 90%)",
+    boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .3)",
+    color: "#93bb96",
+    height: 38,
+    padding: "0 30px",
+  });
   return (
-    <Grid item sx={{}}>
+    <Grid item>
+      <Typography variant="h5" gutterBottom component="div">
+        Create user and quote
+      </Typography>
       <Grid container>
         <Grid item>
           <TextField
-            sx={{ marginRight: "10px" }}
+            sx={{
+              marginRight: "10px",
+            }}
             size="small"
             value={allInputVals.name}
             name="name"
@@ -45,7 +60,13 @@ const Home = ({
             onChange={handleChange}
             sx={{ marginTop: "10px" }}
           />
-          <Button onClick={() => createUser(allInputVals)}>Create user</Button>
+          <MyButton
+            sx={{ marginTop: "8px" }}
+            size="small"
+            onClick={() => createUser(allInputVals)}
+          >
+            Create user
+          </MyButton>
         </Grid>
       </Grid>
       {users.map((user, index) => {

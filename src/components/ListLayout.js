@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { styled } from "@mui/styles";
 import {
   Button,
   Grid,
@@ -14,10 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 const ListLayout = ({
-  likeUser,
-  handleChange,
-  allInputVals,
-  createUser,
   user,
   index,
   selectedPerson,
@@ -37,23 +34,21 @@ const ListLayout = ({
     });
   };
 
+  const MyHeading = styled(Grid)({
+    border: 0,
+    height: 32,
+    borderRadius: 5,
+    background: "linear-gradient(45deg, ##a7b8a8 30%, #a7b8a8 90%)",
+    boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .3)",
+    color: "white",
+  });
   return (
     <Grid item key={`item-${index}`}>
-      <List
-        className={`item ${selectedPerson === index ? "open" : ""}`}
-        sx={{
-          bgcolor: "lightGray",
-        }}
-      >
+      <List className={`item ${selectedPerson === index ? "open" : ""}`}>
         <Grid container item justifyContent="space-between">
           <Grid item>
             {" "}
-            <Typography
-              gutterBottom
-              sx={{ display: "inline" }}
-              component="div"
-              color="text.primary"
-            >
+            <Typography gutterBottom component="div" color="text.primary">
               {user.name}, {user.age} years
             </Typography>
             <Typography variant="body2" gutterBottom component="div">
@@ -62,16 +57,18 @@ const ListLayout = ({
             </Typography>
           </Grid>
           <Grid item>
-            <Button
-              className="editButton"
-              onClick={() => openSelected(user, index)}
-              startIcon={<EditIcon />}
-            >
-              Edit
-            </Button>
+            <MyHeading>
+              <Button
+                size="small"
+                className="editButton"
+                onClick={() => openSelected(user, index)}
+                startIcon={<EditIcon />}
+              >
+                Edit
+              </Button>
+            </MyHeading>
           </Grid>
         </Grid>
-
         <Grid sx={{ marginTop: "20px" }} className="editTextFields">
           <TextField
             value={inputValsToUpdate.name}
@@ -103,6 +100,7 @@ const ListLayout = ({
           />
 
           <Button
+            size="small"
             startIcon={<DoneIcon />}
             onClick={() => {
               updateUser(user.id);
@@ -110,27 +108,31 @@ const ListLayout = ({
           >
             update
           </Button>
+        </Grid>{" "}
+        <Grid item container justifyContent="space-between">
+          <Grid item>
+            <Button
+              size="small"
+              sx={{ marginTop: "10px" }}
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={() => {
+                deleteUser(user.id);
+              }}
+            >
+              Delete
+            </Button>
+          </Grid>
+          <Grid item>
+            <IconButton onClick={() => changeLikeProp(user)}>
+              {user.liked ? (
+                <FavoriteIcon style={{ fill: "red" }} />
+              ) : (
+                <FavoriteIcon style={{ fill: "gray" }} />
+              )}
+            </IconButton>
+          </Grid>
         </Grid>
-
-        <Button
-          size="small"
-          sx={{ marginTop: "10px" }}
-          variant="outlined"
-          startIcon={<DeleteIcon />}
-          onClick={() => {
-            deleteUser(user.id);
-          }}
-        >
-          Delete
-        </Button>
-        <IconButton onClick={() => changeLikeProp(user)}>
-          {user.liked ? (
-            <FavoriteIcon style={{ fill: "red" }} />
-          ) : (
-            <FavoriteIcon style={{ fill: "gray" }} />
-          )}
-        </IconButton>
-
         <Divider sx={{ marginTop: "5px" }} component="li" />
       </List>
     </Grid>

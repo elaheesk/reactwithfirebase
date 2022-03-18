@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import MyLikes from "./pages/MyLikes";
 
 import NavigationBar from "./components/NavigationBar";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Paper } from "@mui/material";
 
 import { db } from "./firebase-config";
 import {
@@ -130,56 +130,69 @@ function App() {
   };
 
   console.log("usersLength", users.length);
+
   return (
-    <Grid
-      sx={{ rowGap: "30px", marginTop: "30px", backgroundColor: "lightGray" }}
-      container
-    >
-      <Grid container justifyContent="center">
-        <Typography variant="h4" gutterBottom component="div">
-          Elahes Quote site
-        </Typography>
-      </Grid>
-      <Grid container item justifyContent="start">
-        <Grid item>
+    <Grid spacing={2} container>
+      <Grid
+        item
+        container
+        justifyContent="space-evenly"
+        sx={{
+          backgroundColor: "#a7b8a8",
+          boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
+        }}
+      >
+        <Grid position="fixed" item container>
           <NavigationBar likeUser={likeUser} />
+        </Grid>
+        <Grid item>
+          <Typography
+            sx={{ fontFamily: "cursive" }}
+            variant="h4"
+            gutterBottom
+            component="div"
+          >
+            Elahes Quote site
+          </Typography>
         </Grid>
       </Grid>
 
-      <Grid container justifyContent="space-evenly" item>
-        <Routes>
-          <Route
-            path="mylikes"
-            element={
-              <MyLikes
-                likeUser={likeUser}
-                setLikeUser={setLikeUser}
-                changeLikeProp={changeLikeProp}
-              />
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <Home
-                users={users}
-                setUsers={setUsers}
-                likeUser={likeUser}
-                setLikeUser={setLikeUser}
-                selectedPerson={selectedPerson}
-                openSelected={openSelected}
-                inputValsToUpdate={inputValsToUpdate}
-                setInputValsToUpdate={setInputValsToUpdate}
-                createUser={createUser}
-                updateUser={updateUser}
-                deleteUser={deleteUser}
-                changeLikeProp={changeLikeProp}
-                allInputVals={allInputVals}
-                handleChange={allInputVals}
-              />
-            }
-          />
-        </Routes>
+      <Grid item xs={12} md={12}>
+        <Grid container justifyContent="space-evenly" item>
+          <Routes>
+            <Route
+              path="mylikes"
+              element={
+                <MyLikes
+                  likeUser={likeUser}
+                  setLikeUser={setLikeUser}
+                  changeLikeProp={changeLikeProp}
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <Home
+                  users={users}
+                  setUsers={setUsers}
+                  likeUser={likeUser}
+                  setLikeUser={setLikeUser}
+                  selectedPerson={selectedPerson}
+                  openSelected={openSelected}
+                  inputValsToUpdate={inputValsToUpdate}
+                  setInputValsToUpdate={setInputValsToUpdate}
+                  createUser={createUser}
+                  updateUser={updateUser}
+                  deleteUser={deleteUser}
+                  changeLikeProp={changeLikeProp}
+                  allInputVals={allInputVals}
+                  handleChange={handleChange}
+                />
+              }
+            />
+          </Routes>
+        </Grid>
       </Grid>
     </Grid>
   );
