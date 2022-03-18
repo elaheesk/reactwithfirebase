@@ -1,7 +1,10 @@
 import React from "react";
-import ListLayout from "./components/ListLayout";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import MyLikes from "./pages/MyLikes";
 
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import NavigationBar from "./components/NavigationBar";
+import { Grid, Typography } from "@mui/material";
 
 import { db } from "./firebase-config";
 import {
@@ -14,6 +17,7 @@ import {
 } from "firebase/firestore";
 function App() {
   const [users, setUsers] = React.useState([]);
+  const [likeUser, setLikeUser] = React.useState([]);
   const [selectedPerson, toggleInputs] = React.useState(-1);
   const [allInputVals, setAllInputVals] = React.useState({
     id: "",
@@ -49,6 +53,7 @@ function App() {
       name: user.name,
       age: user.age,
       quote: user.quote,
+      liked: user.liked,
     };
     setUsers(copyUsersArray);
 
@@ -59,6 +64,7 @@ function App() {
       name: allInputVals.name,
       age: allInputVals.age,
       quote: allInputVals.quote,
+      liked: false,
     });
     const data = await getDocs(usersCollectionRef);
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -78,6 +84,7 @@ function App() {
     const data = await getDocs(usersCollectionRef);
     console.log("vilket id", newFields.id);
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    console.log("Elaheeeee", users);
     setInputValsToUpdate({ name: "", age: "", quote: "" });
     openSelected();
   };
@@ -98,64 +105,81 @@ function App() {
     getUsers();
   }, []);
 
-  console.log(users, "users");
+  React.useEffect(() => {
+    if (users.length !== 0) {
+      const myLikedUsers = users.filter((user) => {
+        if (user.liked === true) {
+          return user;
+        }
+      });
+      setLikeUser(myLikedUsers);
+    }
+  }, [users]);
+
+  const changeLikeProp = (likedUser) => {
+    if (users.length !== 0) {
+      const newArr = users.map((user) => {
+        if (user.id === likedUser.id) {
+          return { ...likedUser, liked: !user.liked };
+        } else {
+          return user;
+        }
+      });
+      setUsers(newArr);
+    }
+  };
+
+  console.log("usersLength", users.length);
   return (
     <Grid
       sx={{ rowGap: "30px", marginTop: "30px", backgroundColor: "lightGray" }}
       container
     >
-      <Grid container item justifyContent="center">
-        {" "}
+      <Grid container justifyContent="center">
         <Typography variant="h4" gutterBottom component="div">
-          Create quote list
+          Elahes Quote site
         </Typography>
       </Grid>
-
-      <Grid container justifyContent="space-evenly">
+      <Grid container item justifyContent="start">
         <Grid item>
-          <TextField
-            sx={{ marginRight: "10px" }}
-            size="small"
-            value={allInputVals.name}
-            name="name"
-            label="Type name"
-            onChange={handleChange}
-          />
-          <TextField
-            size="small"
-            type="number"
-            value={allInputVals.age}
-            name="age"
-            label="Type age"
-            onChange={handleChange}
-          />
-          <TextField
-            name="quote"
-            value={allInputVals.quote}
-            label="Type quote"
-            fullWidth
-            onChange={handleChange}
-            sx={{ marginTop: "10px" }}
-          />
-          <Button onClick={() => createUser(allInputVals)}>Create user</Button>
+          <NavigationBar likeUser={likeUser} />
         </Grid>
       </Grid>
 
       <Grid container justifyContent="space-evenly" item>
-        {users.map((user, index) => {
-          return (
-            <ListLayout
-              user={user}
-              index={index}
-              selectedPerson={selectedPerson}
-              openSelected={openSelected}
-              inputValsToUpdate={inputValsToUpdate}
-              setInputValsToUpdate={setInputValsToUpdate}
-              updateUser={updateUser}
-              deleteUser={deleteUser}
-            />
-          );
-        })}
+        <Routes>
+          <Route
+            path="mylikes"
+            element={
+              <MyLikes
+                likeUser={likeUser}
+                setLikeUser={setLikeUser}
+                changeLikeProp={changeLikeProp}
+              />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <Home
+                users={users}
+                setUsers={setUsers}
+                likeUser={likeUser}
+                setLikeUser={setLikeUser}
+                selectedPerson={selectedPerson}
+                openSelected={openSelected}
+                inputValsToUpdate={inputValsToUpdate}
+                setInputValsToUpdate={setInputValsToUpdate}
+                createUser={createUser}
+                updateUser={updateUser}
+                deleteUser={deleteUser}
+                changeLikeProp={changeLikeProp}
+                allInputVals={allInputVals}
+                handleChange={allInputVals}
+              />
+            }
+          />
+        </Routes>
       </Grid>
     </Grid>
   );

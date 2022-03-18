@@ -3,6 +3,8 @@ import "../index.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Button,
   Grid,
@@ -12,6 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 const ListLayout = ({
+  likeUser,
+  handleChange,
+  allInputVals,
+  createUser,
   user,
   index,
   selectedPerson,
@@ -20,6 +26,7 @@ const ListLayout = ({
   setInputValsToUpdate,
   updateUser,
   deleteUser,
+  changeLikeProp,
 }) => {
   const handleChangeNewInputs = (evt) => {
     setInputValsToUpdate({
@@ -29,12 +36,12 @@ const ListLayout = ({
       [evt.target.quote]: evt.target.value,
     });
   };
+
   return (
     <Grid item key={`item-${index}`}>
       <List
         className={`item ${selectedPerson === index ? "open" : ""}`}
         sx={{
-          width: "900px",
           bgcolor: "lightGray",
         }}
       >
@@ -116,6 +123,13 @@ const ListLayout = ({
         >
           Delete
         </Button>
+        <IconButton onClick={() => changeLikeProp(user)}>
+          {user.liked ? (
+            <FavoriteIcon style={{ fill: "red" }} />
+          ) : (
+            <FavoriteIcon style={{ fill: "gray" }} />
+          )}
+        </IconButton>
 
         <Divider sx={{ marginTop: "5px" }} component="li" />
       </List>
