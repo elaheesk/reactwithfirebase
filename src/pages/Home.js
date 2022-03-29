@@ -1,7 +1,9 @@
 import React from "react";
+import "../App.css";
 import ListLayout from "../components/ListLayout";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/styles";
+
 const Home = ({
   users,
   setUsers,
@@ -19,55 +21,61 @@ const Home = ({
   changeLikeProp,
 }) => {
   const MyButton = styled(Button)({
-    border: 0,
-    borderRadius: 3,
-    background: "linear-gradient(45deg, ##a7b8a8 30%, #a7b8a8 90%)",
-    boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .3)",
-    color: "#93bb96",
+    border: 3,
+    borderRadius: 7,
+    background: "linear-gradient(45deg, bisque 30%, rgb(136, 223, 214)90%)",
+    boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .4)",
+
     height: 38,
     padding: "0 30px",
   });
   return (
-    <Grid item>
-      <Typography variant="h5" gutterBottom component="div">
+    <Grid item container justifyContent="center">
+      <Typography
+        variant="h6"
+        sx={{ color: "bisque", textShadow: "1px 1px black" }}
+      >
         Create user and quote
       </Typography>
-      <Grid item container>
-        <Grid item>
-          <TextField
-            sx={{
-              marginRight: "10px",
-            }}
-            size="small"
-            value={allInputVals.name}
-            name="name"
-            label="Type name"
-            onChange={handleChange}
-          />
-          <TextField
-            size="small"
-            type="number"
-            value={allInputVals.age}
-            name="age"
-            label="Type age"
-            onChange={handleChange}
-          />
-          <TextField
-            name="quote"
-            value={allInputVals.quote}
-            label="Type quote"
-            fullWidth
-            onChange={handleChange}
-            sx={{ marginTop: "5px" }}
-          />
-          <MyButton
-            sx={{ marginTop: "5px" }}
-            size="small"
-            onClick={() => createUser(allInputVals)}
-          >
-            Create user
-          </MyButton>
-        </Grid>
+      <Grid
+        item
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <TextField
+          sx={{ boxShadow: "0px 1px 10px 1px  black inset", borderRadius: 1 }}
+          size="small"
+          value={allInputVals.name}
+          name="name"
+          label="Type name"
+          onChange={handleChange}
+          margin="dense"
+        />{" "}
+        <TextField
+          sx={{ boxShadow: "0px 1px 10px 1px  black inset", borderRadius: 1 }}
+          size="small"
+          type="number"
+          value={allInputVals.age}
+          name="age"
+          label="Type age"
+          onChange={handleChange}
+          margin="dense"
+        />{" "}
+        <TextField
+          sx={{ boxShadow: "0px 1px 10px 1px  black inset", borderRadius: 1 }}
+          name="quote"
+          value={allInputVals.quote}
+          label="Type quote"
+          onChange={handleChange}
+          multiline
+          rows={3}
+          margin="dense"
+        />
+        <MyButton size="small" onClick={() => createUser(allInputVals)}>
+          Create user
+        </MyButton>
       </Grid>
       <Grid item sx={{ marginTop: "30px" }}>
         {users.map((user, index) => {

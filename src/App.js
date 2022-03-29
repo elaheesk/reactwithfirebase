@@ -1,10 +1,11 @@
 import React from "react";
+import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import MyLikes from "./pages/MyLikes";
 
 import NavigationBar from "./components/NavigationBar";
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import { db } from "./firebase-config";
 import {
@@ -38,7 +39,8 @@ function App() {
   const handleChange = (evt) => {
     setAllInputVals({
       ...allInputVals,
-      [evt.target.name]: evt.target.value,
+      [evt.target.name]:
+        evt.target.value.charAt(0).toUpperCase() + evt.target.value.slice(1),
       [evt.target.age]: evt.target.value,
       [evt.target.quote]: evt.target.value,
     });
@@ -100,7 +102,6 @@ function App() {
     const getUsers = async () => {
       const data = await getDocs(usersCollectionRef);
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      // console.log(data.docs);
     };
     getUsers();
   }, []);
@@ -129,34 +130,23 @@ function App() {
     }
   };
 
-  console.log("usersLength", users.length);
-
   return (
-    <Grid spacing={3} container>
-      <Grid
-        item
-        container
-        sx={{
-          backgroundColor: "#a7b8a8",
-          boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-        }}
-      >
-        <Grid item xs={6} md={5} container>
-          <NavigationBar likeUser={likeUser} />
-        </Grid>
-        <Grid item xs={6} md={7}>
+    <Grid className="PictureGrid" container>
+      <Grid container justifyContent="center">
+        <Grid item>
           <Typography
-            sx={{ fontFamily: "cursive" }}
+            sx={{ fontFamily: "cursive", color: "bisque" }}
             variant="h4"
             gutterBottom
-            component="div"
           >
             Elahes Quote List
           </Typography>
         </Grid>
       </Grid>
-
-      <Grid item container xs={12} md={12} justifyContent="space-evenly">
+      <Grid item>
+        <NavigationBar likeUser={likeUser} />
+      </Grid>
+      <Grid item>
         <Routes>
           <Route
             path="mylikes"
@@ -168,6 +158,7 @@ function App() {
               />
             }
           />
+
           <Route
             path="/"
             element={

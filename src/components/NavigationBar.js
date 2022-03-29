@@ -1,19 +1,23 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Grid, Typography, Badge, Link } from "@mui/material";
+import { Grid, Badge, Link } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const NavigationBar = ({ likeUser, setLikeUser }) => {
+const NavigationBar = ({ likeUser }) => {
   return (
-    <Grid item container position="fixed" sx={{ marginLeft: "30px" }}>
-      <Typography fontWeight={"light"} variant="h6">
-        <Link component={RouterLink} to="/">
+    <Grid container sx={{ marginLeft: 5 }}>
+      <Grid item>
+        <Link component={RouterLink} to="/" color="inherit" variant="h6">
           Home
         </Link>
-      </Typography>
 
-      <Typography fontWeight={"light"} variant="h6" sx={{ marginLeft: 2 }}>
-        <Link component={RouterLink} to="mylikes">
+        <Link
+          component={RouterLink}
+          to="mylikes"
+          color="inherit"
+          variant="h6"
+          sx={{ marginLeft: 2 }}
+        >
           My likes
         </Link>
         <Badge color="secondary" badgeContent={likeUser.length}>
@@ -23,7 +27,7 @@ const NavigationBar = ({ likeUser, setLikeUser }) => {
             <FavoriteIcon style={{ fill: "gray" }} fontSize="small" />
           )}
         </Badge>
-      </Typography>
+      </Grid>
     </Grid>
   );
 };
