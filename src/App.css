@@ -1,28 +1,22 @@
 .PictureGrid {
-  width: 100%;
-  height: auto;
-  overflow-y: scroll;
-  background: url(https://wallpaperaccess.com/thumb/376860.jpg);
-  background-repeat: no-repeat;
-  -webkit-mask-image: linear-gradient(black);
-  mask-image: linear-gradient (black, transparent);
-  background-size: cover;
-  position: relative;
-
-  border-radius: 5px;
+	width: 100%;
+	height: auto;
+	overflow-y: scroll;
+	background-size: cover;
+	position: relative;
 }
 
 .navigation-And-Heading-container {
-  margin-top: 15px;
+	margin-top: 15px;
 }
 .editButton {
-  font-weight: bold;
-  cursor: pointer;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .editTextFields {
-  display: none;
+	display: none;
 }
 .open .editTextFields {
-  display: block;
+	display: block;
 }
