@@ -49,15 +49,15 @@ function App() {
 	const openSelected = (user, index) => {
 		toggleInputs(selectedPerson === index ? -1 : index);
 
-		const copyUsersArray = [...users];
-		copyUsersArray[index] = {
+		const copyUsersInfo = [...users];
+		copyUsersInfo[index] = {
 			id: user.id,
 			name: user.name,
 			age: user.age,
 			quote: user.quote,
 			liked: user.liked,
 		};
-		setUsers(copyUsersArray);
+		setUsers(copyUsersInfo);
 
 		setInputValsToUpdate({ name: user.name, age: user.age, quote: user.quote });
 	};
@@ -85,7 +85,6 @@ function App() {
 		const data = await getDocs(usersCollectionRef);
 		console.log("vilket id", newFields.id);
 		setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-		console.log("Elaheeeee", users);
 		setInputValsToUpdate({ name: "", age: "", quote: "" });
 		openSelected();
 	};
@@ -133,10 +132,7 @@ function App() {
 		<Grid className="PictureGrid" container>
 			<Grid container justifyContent="center">
 				<Grid item>
-					<Typography
-						sx={{ fontFamily: "cursive", color: "bisque" }}
-						variant="h4"
-						gutterBottom>
+					<Typography sx={{ fontFamily: "cursive" }} variant="h4" gutterBottom>
 						Elahes Quote List
 					</Typography>
 				</Grid>

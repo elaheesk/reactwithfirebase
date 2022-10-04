@@ -32,17 +32,17 @@ const ListLayout = ({
 		border: 0,
 		height: 32,
 		borderRadius: 5,
-		background: "linear-gradient(45deg, bisque 30%, rgb(136, 223, 214)90%)",
-		boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .5)",
+
+		boxShadow: "0 2px 4px 2px navy",
 		color: "white",
 	});
+	console.log("jshajgdhijks", openSelected);
 	return (
-		<Grid item key={`item-${index}`}
-    >
+		<Grid item key={`item-${index}`}>
 			<List
 				className={`item ${selectedPerson === index ? "open" : ""}`}
 				sx={{
-					boxShadow: "0px 1px 10px 1px  black inset",
+					boxShadow: "0px 1px 10px 1px  gray inset",
 					marginBottom: "10px",
 					padding: 2,
 					borderRadius: 5,
@@ -54,7 +54,7 @@ const ListLayout = ({
 							component="div"
 							variant="h6"
 							sx={{
-								color: "brown",
+								color: "gray",
 								textShadow: "1px 1px black",
 							}}>
 							{user.name}, {user.age} years
@@ -64,9 +64,10 @@ const ListLayout = ({
 							component="div"
 							sx={{
 								color: "darkslategray",
+								fontFamily: "cursive",
 							}}>
 							{" "}
-							Quote: {user.quote}
+							{user.quote}
 						</Typography>
 					</Grid>
 					<Grid item>
@@ -115,6 +116,7 @@ const ListLayout = ({
 						id="outlined-multiline-static"
 						label="Type quote"
 						multiline
+						fullWidth
 						rows={3}
 						value={inputValsToUpdate.quote}
 						name="quote"
@@ -124,36 +126,18 @@ const ListLayout = ({
 					<Button
 						variant="outlined"
 						sx={{
-							background:
-								"linear-gradient(45deg, bisque 30%, rgb(136, 223, 214)90%)",
 							boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .5)",
+							alignSelf: "flex-end",
 						}}
 						size="small"
 						startIcon={<DoneIcon />}
 						onClick={() => {
 							updateUser(user.id);
 						}}>
-						update
+						Update
 					</Button>
 				</Grid>{" "}
 				<Grid item container justifyContent="space-between">
-					<Grid item>
-						<Button
-							size="small"
-							sx={{
-								marginTop: "10px",
-								background:
-									"linear-gradient(45deg, rgb(107, 104, 104) 30%, #bcaaa4 90%)",
-								boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .3)",
-								borderRadius: 1,
-							}}
-							startIcon={<DeleteIcon sx={{ color: "white" }} />}
-							onClick={() => {
-								deleteUser(user.id);
-							}}>
-							Delete
-						</Button>
-					</Grid>
 					<Grid item>
 						<IconButton onClick={() => changeLikeProp(user)}>
 							{user.liked ? (
@@ -162,6 +146,22 @@ const ListLayout = ({
 								<FavoriteIcon style={{ fill: "gray" }} />
 							)}
 						</IconButton>
+					</Grid>
+					<Grid item>
+						<Button
+							size="small"
+							sx={{
+								marginTop: "10px",
+								color: "red",
+								boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .3)",
+								borderRadius: 1,
+							}}
+							startIcon={<DeleteIcon sx={{ color: "gray" }} />}
+							onClick={() => {
+								deleteUser(user.id);
+							}}>
+							Delete
+						</Button>
 					</Grid>
 				</Grid>
 			</List>
