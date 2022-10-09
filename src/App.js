@@ -135,6 +135,9 @@ function App() {
 					<Typography sx={{ fontFamily: "cursive" }} variant="h4" gutterBottom>
 						Elahes Quote List
 					</Typography>
+					<Typography variant="h6" gutterBottom>
+						(The data gets stored in firebase database)
+					</Typography>
 				</Grid>
 			</Grid>
 			<Grid item>

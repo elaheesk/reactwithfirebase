@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { styled } from "@mui/styles";
 import { Button, Grid, List, TextField, Typography } from "@mui/material";
+import "./listLayout.css";
+
 const ListLayout = ({
 	user,
 	index,
@@ -81,7 +83,7 @@ const ListLayout = ({
 						</MyHeading>
 					</Grid>
 				</Grid>
-				<Grid sx={{ marginTop: "20px" }} className="editTextFields">
+				<Grid className="editTextFields">
 					<TextField
 						value={inputValsToUpdate.name}
 						name="name"
@@ -108,11 +110,12 @@ const ListLayout = ({
 							width: 150,
 							boxShadow: "0px 1px 10px 1px  black inset",
 							borderRadius: 1,
+							marginBottom: "10px",
 						}}
 					/>
 
 					<TextField
-						sx={{ boxShadow: "0px 1px 10px 1px  black inset", borderRadius: 1 }}
+						className="quote-box"
 						id="outlined-multiline-static"
 						label="Type quote"
 						multiline
@@ -125,10 +128,8 @@ const ListLayout = ({
 
 					<Button
 						variant="outlined"
-						sx={{
-							boxShadow: "0 2px 4px 2px rgba(30, 199, 230, .5)",
-							alignSelf: "flex-end",
-						}}
+						sx={{}}
+						className="update-btn"
 						size="small"
 						startIcon={<DoneIcon />}
 						onClick={() => {
